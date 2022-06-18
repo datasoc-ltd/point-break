@@ -26,8 +26,9 @@ public class BodhiAwsHandler implements RequestStreamHandler {
     CompletableFuture<HttpResponse<String>> pageFuture = client.tides(TIDES);
     try {
       HttpResponse<String> page = pageFuture.get(7000, TimeUnit.MILLISECONDS);
-      ResponseHandler responseHandler = new ResponseHandler();
-      TidalEvent[] tidalEvents = responseHandler.getTideTimes(page.body());
+      log.info("Response is {}", page.statusCode());
+      TidesApiResponseHandler tidesApiResponseHandler = new TidesApiResponseHandler();
+      TidalEvent[] tidalEvents = tidesApiResponseHandler.getTideTimes(page.body());
       String message = SlackMessageProducer.produceSlackMessage(tidalEvents);
       client.notifySlack(message);
     } catch (Exception e) {

@@ -1,6 +1,7 @@
 package tech.dsoc.labs.bodhi.tides;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import lombok.extern.slf4j.Slf4j;
@@ -11,18 +12,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class SlackMessageProducer {
 
-  private static final String HEADER =
-      "::beach_with_umbrella:: *Hove* tides *%s* ::beach_with_umbrella:  :";
+  private static final String HEADER = ":beach_with_umbrella: *Hove* - *%s* :beach_with_umbrella:";
   private static final String BLOCK_FORMAT = "{\"blocks\": [%s]}";
 
   static String produceSlackMessage(TidalEvent[] tidalEvents) {
+    return produceSlackMessage(tidalEvents, ZonedDateTime.now());
+  }
+
+  static String produceSlackMessage(TidalEvent[] tidalEvents, ZonedDateTime statusAt) {
     String dow = LocalDate.now().format(DateTimeFormatter.ofPattern("EEEE"));
     StringBuilder sections = new StringBuilder();
     sections.append(slackSection(String.format(HEADER, dow)));
     sections.append(",");
     sections.append(times(tidalEvents));
     sections.append(",");
-    sections.append(status(tidalEvents));
+    sections.append(status(tidalEvents, statusAt));
     String message = String.format(BLOCK_FORMAT, sections);
     return message;
   }
@@ -48,9 +52,9 @@ class SlackMessageProducer {
     return message.toString();
   }
 
-  static String status(TidalEvent[] tidalEvents) {
+  static String status(TidalEvent[] tidalEvents, ZonedDateTime statusAt) {
     StringBuilder message = new StringBuilder();
-    TidalStatus status = new TidalStatus(tidalEvents);
+    TidalStatus status = new TidalStatus(tidalEvents, statusAt);
     StringBuilder statusMessage = new StringBuilder();
     statusMessage.append("The tide is ");
     statusMessage.append(status.getThisStatus().toLowerCase(Locale.ROOT));

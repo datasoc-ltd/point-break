@@ -13,8 +13,9 @@ class SlackMessageProducerTest {
 
   @Test
   void testMessage() {
-    String message = SlackMessageProducer.produceSlackMessage(TestFixtures.tidalEvents());
+    String message =
+        SlackMessageProducer.produceSlackMessage(
+            TestFixtures.tidalEvents(), TestFixtures.expectedRising());
     assertThat(message).isNotNull();
-    log.info(message);
   }
 }

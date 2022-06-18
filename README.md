@@ -21,7 +21,7 @@ It uses the following services and APIs:
 
 * Sign up for the UKHO APIs (see above) or use an alternative source
     * If you use an alternative source then you will need to implement your
-      own ````tech.dsoc.labs.bodhi.tides.ResponseHandler````
+      own ````tech.dsoc.labs.bodhi.tides.TidesApiResponseHandler````
 * [Create an app on Slack](https://api.slack.com/authentication/basics#creating) and install it to
   your channel
     * This will give you a Slack webhook URL which you will need to set (see below)

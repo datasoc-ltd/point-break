@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author sih
  */
 @Slf4j
-class ResponseHandler {
+class TidesApiResponseHandler {
 
   private static ObjectMapper objectMapper = new ObjectMapper();
   private TidalEvent[] tidalEvents;
